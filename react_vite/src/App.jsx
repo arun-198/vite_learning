@@ -16,6 +16,7 @@ import { useDemoRouter } from '@toolpad/core/internal';
 import AddIcon from '@mui/icons-material/Add';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import Expense from './pages/Expense';
 
 
 const NAVIGATION = [
@@ -94,6 +95,16 @@ function App() {
 
   const router = useDemoRouter('/dashboard');
 
+  // Render the appropriate component based on the router's pathname
+  const renderPage = () => {
+    switch (router.pathname) {
+      case '/expenses':
+        return <Expense />;
+      default:
+        return <DemoPageContent pathname={router.pathname} />;
+    }
+  };
+
 
 
   return (
@@ -110,7 +121,7 @@ function App() {
       >
         
         <DashboardLayout> 
-          <DemoPageContent pathname={router.pathname} />
+          {renderPage()}
         </DashboardLayout>
       </AppProvider>
     </>
