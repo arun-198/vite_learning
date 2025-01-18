@@ -112,8 +112,8 @@ function App() {
       <AppProvider
         navigation={NAVIGATION}
         branding={{
-          logo:  <AccountBalanceIcon style={{marginTop:'25%',fill: 'var(--mui-palette-primary-main)'}}/>,
-          title: 'Finance Tracker',
+          logo:  <AccountBalanceIcon style={{marginTop:'25%',marginLeft: '50%',fill: 'var(--mui-palette-primary-main)'}}/>,
+          title: <span style={{ marginLeft: '10%' }}>Finance Tracker</span>,
           homeUrl: '/home',
         }}
         router={router}
