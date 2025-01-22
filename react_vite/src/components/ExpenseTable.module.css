@@ -51,6 +51,10 @@ h2 small {
     margin-bottom: 10px; /* Reduced spacing */
 }
 
+.tableRow:hover{
+    background-color: #615e5e;
+}
+
 .col1 {
     flex-basis: 5%;
 }
@@ -80,6 +84,7 @@ h2 small {
     .tableRow {
         display: block;
     }
+    
     .tableRow div {
         display: flex;
         padding: 10px 0;
@@ -92,3 +97,5 @@ h2 small {
         text-align: right;
     }
 }
+
+
