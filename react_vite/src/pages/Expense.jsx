@@ -4,60 +4,112 @@ import * as React from 'react';
 import ExpenseTable from "../components/expenseTable";
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import FormDialog from "../components/FormDialog";
 
+import {getExpenses, getExpensesByMonth} from '../services/ExpenseApi';
 
+//import DialogContentText from '@mui/material/DialogContentText';
   
 export default function Expense() {
 
-    const expensesByMonth = {
-        Jan: [
-          { expenseCat: "Work", budget: 120, spent: 0, date: "01/01/2025" },
-          
-        ],
-        
-      };
+    const months = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
 
-    const [expenseJan, setExpenseJan] = React.useState(expensesByMonth);
+    const [expenseMonths, setExpenseMonths] = React.useState(new Object()); //Sample data for all months
     const [value, setValue] = React.useState(0);
-    const [selectedExpenses, setSelectedExpenses] = React.useState(expenseJan.Jan); // Default to Jan expenses
+    const [selectedMonth, setSelectedMonth] = React.useState("Jan");
+    const [selectedExpenses, setSelectedExpenses] = React.useState(new Object()); // Default to Jan expenses
     const [open, setOpen] = React.useState(false);
+    const [showExpenseTable, setShowExpenseTable] = React.useState(true);
+    const [expenseCatArray,setExpenseCatArray] = React.useState([]);
+    const [showExpenseBtn, setShowExpenseBtn] = React.useState(false);
+
 
     const handleChange = (event, newValue) => {
+        console.log(newValue);
         setValue(newValue);
         // Update the selectedExpenses based on the tab
-        const month = Object.keys(expenseJan)[newValue];
-        setSelectedExpenses(expenseJan[month]);
+        //const month = Object.keys(expenseMonths)[newValue];
+        //const selectedMonthData = expenseMonths[newValue];
+        setSelectedMonth(months[newValue]);
+        //setSelectedExpenses(expenseMonths[newValue].expenses);
+        fetchExpensesForMonth(months[newValue]);
+        if (selectedExpenses && selectedExpenses.expenses) {
+          // setSelectedMonth(months[newValue]);
+          // //setSelectedExpenses(expenseMonths[newValue].expenses);
+          // fetchExpensesForMonth(months[newValue]);
+          setExpenseCatArray(selectedExpenses.expenses.map(expenseItems => expenseItems.expenseCat));
+          console.log(expenseMonths[newValue].expenses);
+        } else {
+          console.log("No expenses found for this month.");
+          setSelectedMonth(months[newValue]); // Still set the selected month
+          setSelectedExpenses([]); // Or some default value/empty array
+          setExpenseCatArray([]); // Or some default value/empty array
+          //setShowExpenseTable(false); // Hide the table if no data
+
+        }
+        setShowExpenseTable(true);
+        
     };
 
-    const handleExpenseJan = (addedExpense) => {
-      addedExpense.spent = 0;
-      addedExpense.date = ' ';
-      const updatedExpenses = {
-        ...expenseJan, // Copy the existing state
-        Jan: [...expenseJan.Jan, addedExpense], // Update the Jan array
-      };
-      console.log(updatedExpenses);
-      setExpenseJan(updatedExpenses);
-      // Update selectedExpenses if currently viewing the Jan tab
-      if (value === 0) {
-        setSelectedExpenses(updatedExpenses.Jan);
-      }
-    }
-
+    
    
     const handleClickOpen = () => {
       setOpen(true);
     };
+
+    const handleShowExpenseBtn = () => {
+      setShowExpenseTable(true);
+      setShowExpenseBtn(false);
+
+    }
+
+    React.useEffect(() => {
+      const fetchItems = async () => {
+        try {
+          const data = await getExpenses();
+          console.log(data[0].expenses);
+          setExpenseMonths(data);
+          setSelectedExpenses(data[0].expenses);
+          setExpenseCatArray(data[0].expenses.map(expenseItems => expenseItems.expenseCat));
+        } catch (err) { // Catch the error re-thrown from the API function
+          console.log(err.message); // Or a more user-friendly message
+          console.error("Expense error:", err); // Keep logging the detailed error
+        } 
+      };
   
-    const handleClose = () => {
-      setOpen(false);
-    };
+      fetchItems();
+    }, []);
+
+    const fetchExpensesForMonth = async (targetMonth) => {
+      try {
+        const data = await getExpensesByMonth(targetMonth);
+        console.log(data);
+        setSelectedExpenses(data.expenses);
+      } catch (err) {
+        console.error("Expense Month error:", err);
+      } 
+    }
+  
+    // React.useEffect(() => {
+    //   const fetchItems = async () => {
+    //     try {
+    //       const data = await getExpensesByMonth(selectedMonth);
+    //       //console.log(data);
+    //       setSelectedExpenses(data);
+    //     } catch (err) { // Catch the error re-thrown from the API function
+    //       console.log(err.message); // Or a more user-friendly message
+    //       console.error("Expense Month error:", err); // Keep logging the detailed error
+    //     } 
+    //   };
+  
+    //   fetchItems();
+    // }, []);
+
+
+
      
     return (
         <Box
@@ -70,73 +122,42 @@ export default function Expense() {
       }}
     >
         <Typography variant="h4" gutterBottom>
-                Expenses for 2024
+                Expenses for 2025
         </Typography>
-      <br></br>
+
+        <br></br>
+
         <Tabs value={value} onChange={handleChange} centered>
-            <Tab label="Jan" />
-            <Tab label="Feb" />
-            <Tab label="Mar" />
+          {/* <Tab label="Jan" />
+          <Tab label="Feb" />
+          <Tab label="Mar" /> */}
+          {months.map((month) => (
+            <Tab key={month} label={month} />
+          ))}
         </Tabs>
         <br />
-        <Dialog
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          component: 'form', 
-          onSubmit: (event) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries(formData.entries());
-            formJson.budget = parseFloat(formJson.budget);
-            handleExpenseJan(formJson);
-            console.log(formJson);
-            handleClose();
-          },
-        }}
-        className={styles.formDialog}
-      >
-        <DialogTitle >New Expense Category</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Please enter the following: 
-          </DialogContentText>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="expenseCat"
-            label="Expense Cat"
-            type="string"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="budget"
-            label="Budget"
-            type="number"
-            
-            variant="standard"
-          />
-          
-        
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Add</Button>
-        </DialogActions>
-      </Dialog>
-      <ExpenseTable expenses={selectedExpenses} />
+      <FormDialog 
+        selectedExpenses={selectedExpenses}
+        selectedMonth={selectedMonth}
+        setSelectedExpenses={setSelectedExpenses}
+        expenseCatArray={expenseCatArray}
+        open={open} setOpen={setOpen} />
+      <ExpenseTable 
+        expenses={selectedExpenses} 
+        showExpenseTable={showExpenseTable} 
+        setShowExpenseTable={setShowExpenseTable}
+        expenseCatArray={expenseCatArray}
+        setShowExpenseBtn={setShowExpenseBtn}/>
+      
       <br />
-       <Button variant="contained" endIcon={<AddIcon />} onClick={handleClickOpen}> 
-        Add
-       </Button>
-       
+      <div className={styles.buttonFlexBox}> {/* Container for buttons */}
+        <Button variant="contained" endIcon={<AddIcon />} onClick={handleClickOpen}>
+          Add
+        </Button>
+        
+        {showExpenseBtn && <Button variant="contained" onClick={handleShowExpenseBtn}>Expenses</Button>}
+      </div>
+            
     </Box>
     
     )

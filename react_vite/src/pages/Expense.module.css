@@ -1,11 +1,5 @@
-.formDialog {
-    width: 100%;
-}
-.formDialog div form {
-    width: 100%;
-    background-color:  rgb(0, 0, 0);
-    max-width: 140vh;
-    font-weight: bold;
-    margin-left: 15%;
-    margin-bottom: 10%;
+.buttonFlexBox {
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
