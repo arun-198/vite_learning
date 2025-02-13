@@ -3,7 +3,7 @@ body {
 }
 
 ul {
-    width: 120vh;
+    width: 100vh;
 }
 
 .container {
@@ -48,33 +48,39 @@ h2 small {
     padding: 25px 30px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 10px; /* Reduced spacing */
 }
 
-.tableRow:hover{
+/* .tableRow:hover{
     background-color: #615e5e;
-}
+} */
 
 .col1 {
     flex-basis: 5%;
+    align-items: center;
 }
 
 .col2 {
-    flex-basis: 28%;
+    flex-basis: 23%;
+    align-items: center;
 }
 
 .col3 {
     flex-basis: 13%;
+    align-items: center;
 }
 
 .col4 {
     flex-basis: 13%;
+    align-items: center;
 }
 .col5 {
     flex-basis: 18%;
+    align-items: center;
 }
 .col6 {
-    flex-basis: 10%;
+    flex-basis: 15%;
 }
 
 @media all and (max-width: 767px) {

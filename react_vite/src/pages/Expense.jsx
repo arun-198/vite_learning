@@ -36,6 +36,7 @@ export default function Expense() {
         setSelectedMonth(months[newValue]);
         //setSelectedExpenses(expenseMonths[newValue].expenses);
         fetchExpensesForMonth(months[newValue]);
+        setExpenseCatArray(selectedExpenses.expenses.map(expenseItems => expenseItems.expenseCat));
         if (selectedExpenses && selectedExpenses.expenses) {
           // setSelectedMonth(months[newValue]);
           // //setSelectedExpenses(expenseMonths[newValue].expenses);
@@ -43,13 +44,14 @@ export default function Expense() {
           setExpenseCatArray(selectedExpenses.expenses.map(expenseItems => expenseItems.expenseCat));
           console.log(expenseMonths[newValue].expenses);
         } else {
-          console.log("No expenses found for this month.");
-          setSelectedMonth(months[newValue]); // Still set the selected month
-          setSelectedExpenses([]); // Or some default value/empty array
-          setExpenseCatArray([]); // Or some default value/empty array
+          // console.log("No expenses found for this month.");
+          // setSelectedMonth(months[newValue]); // Still set the selected month
+          // setSelectedExpenses([]); // Or some default value/empty array
+          // setExpenseCatArray([]); // Or some default value/empty array
           //setShowExpenseTable(false); // Hide the table if no data
 
         }
+        setShowExpenseBtn(false);
         setShowExpenseTable(true);
         
     };
@@ -57,6 +59,7 @@ export default function Expense() {
     
    
     const handleClickOpen = () => {
+      console.log(`expense category array: ${expenseCatArray}`);
       setOpen(true);
     };
 
@@ -87,8 +90,12 @@ export default function Expense() {
       try {
         const data = await getExpensesByMonth(targetMonth);
         console.log(data);
+        //setExpenseMonths(data);
         setSelectedExpenses(data.expenses);
+        setExpenseCatArray(data.expenses.map(expenseItems => expenseItems.expenseCat));
       } catch (err) {
+        setSelectedExpenses([]);
+        setExpenseCatArray([]);
         console.error("Expense Month error:", err);
       } 
     }
@@ -141,12 +148,16 @@ export default function Expense() {
         selectedMonth={selectedMonth}
         setSelectedExpenses={setSelectedExpenses}
         expenseCatArray={expenseCatArray}
+        setExpenseCatArray={setExpenseCatArray}
         open={open} setOpen={setOpen} />
       <ExpenseTable 
         expenses={selectedExpenses} 
+        selectedMonth={selectedMonth}
+        setSelectedExpenses={setSelectedExpenses}
         showExpenseTable={showExpenseTable} 
         setShowExpenseTable={setShowExpenseTable}
         expenseCatArray={expenseCatArray}
+        setExpenseCatArray={setExpenseCatArray}
         setShowExpenseBtn={setShowExpenseBtn}/>
       
       <br />

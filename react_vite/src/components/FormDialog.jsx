@@ -14,7 +14,7 @@ import PropTypes from "prop-types";
 
 import {updateExpensesByMonth} from '../services/ExpenseApi';
 
-export default function FormDialog({ selectedExpenses, selectedMonth, setSelectedExpenses,expenseCatArray, open, setOpen}) {
+export default function FormDialog({ selectedExpenses, selectedMonth, setSelectedExpenses,expenseCatArray,setExpenseCatArray,open, setOpen}) {
 
     //const [open, setOpen] = React.useState(false);
     const [formType, setFormType] = React.useState('Expense Category'); // Default form type
@@ -33,7 +33,7 @@ export default function FormDialog({ selectedExpenses, selectedMonth, setSelecte
       const handleExpenseCatMth = (addedExpenseCat) => {
         addedExpenseCat.spent = 0;
         addedExpenseCat.date = ' ';
-        addedExpenseCat.expenseItems = {};
+        addedExpenseCat.expenseItems = [];
         let updatedExpensesCat = [
           ...selectedExpenses // Copy the existing state  
         ];
@@ -49,7 +49,7 @@ export default function FormDialog({ selectedExpenses, selectedMonth, setSelecte
   
         // Update selectedExpenses
         setSelectedExpenses(updatedExpensesCat);
-        
+        setExpenseCatArray(updatedExpensesCat.map(expenseItems => expenseItems.expenseCat));
       }
   
       const handleExpenseMth = (addedExpense) => {
@@ -116,7 +116,7 @@ export default function FormDialog({ selectedExpenses, selectedMonth, setSelecte
           }
 
           console.log(formJson);
-          handleClose();
+          setOpen(false);
         },
       }}
       className={styles.formDialog}
@@ -233,6 +233,7 @@ FormDialog.propTypes = {
     selectedMonth: PropTypes.string.isRequired,
     setSelectedExpenses: PropTypes.func.isRequired,
     expenseCatArray:PropTypes.array.isRequired,
+    setExpenseCatArray: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
     setOpen: PropTypes.func.isRequired
   };
