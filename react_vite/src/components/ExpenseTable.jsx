@@ -7,11 +7,32 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {updateExpensesByMonth} from '../services/ExpenseApi';
 
+import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
+import { styled } from '@mui/material/styles';
+
 export default function ExpenseTable({ expenses,selectedMonth,setSelectedExpenses, showExpenseTable, setShowExpenseTable, expenseCatArray, setExpenseCatArray, handleClickUpdate, setShowExpenseBtn }) {
 
   //let ExpenseCatList = ['Travel','Food'];
   const [expenseCat, setExpenseCat] = React.useState(expenseCatArray[0]); 
   const [expenseItems, setExpenseItems] = React.useState([]);
+
+  const BorderLinearProgress = styled(LinearProgress)(({ theme, value }) => ({ // Add value prop
+    height: 10,
+    borderRadius: 5,
+    [`&.${linearProgressClasses.colorPrimary}`]: {
+      backgroundColor: theme.palette.grey[200],
+      ...theme.applyStyles('dark', {
+        backgroundColor: theme.palette.grey[800],
+      }),
+    },
+    [`& .${linearProgressClasses.bar}`]: {
+      borderRadius: 5,
+      backgroundColor: value === 100 ? '#8f0029' : '#1a90ff', // Conditional color
+      ...theme.applyStyles('dark', {
+        backgroundColor: value === 100 ? '#8f0029' : '#308fe8', // Conditional color in dark mode
+      }),
+    },
+  }));
 
 
     const openExpense = ( expenseCat ) => {
@@ -119,7 +140,7 @@ export default function ExpenseTable({ expenses,selectedMonth,setSelectedExpense
               <div className={styles.col2}>Expense Cat</div>
               <div className={styles.col3}>Budget</div>
               <div className={styles.col4}>Spent</div>
-              <div className={styles.col5}>Date</div>
+              <div className={styles.col5}>Status</div>
               <div className={styles.col6}>Actions</div>
             </li>
             {expenses.map((expense, index) => (
@@ -128,7 +149,10 @@ export default function ExpenseTable({ expenses,selectedMonth,setSelectedExpense
                 <div className={styles.col2} data-label="Expense Cat">{expense.expenseCat}</div>
                 <div className={styles.col3} data-label="Budget">{expense.budget}</div>
                 <div className={styles.col4} data-label="Spent">{expense.spent}</div>
-                <div className={styles.col5} data-label="Date">{expense.date}</div>
+                {/* <div className={styles.col5} data-label="Date">{expense.date}</div> */}
+                <div className={styles.col5} data-label="progressBar">
+                  <BorderLinearProgress variant="determinate" value={Math.min(100, (expense.spent / expense.budget) * 100)} />
+                </div>
                 <div className={styles.col6}> 
                 <IconButton sx={{'&:hover': {backgroundColor: 'grey'}}} size="small" aria-label="view expense cart" onClick={()=>openExpense(expense.expenseCat)}>
                   <VisibilityIcon style={{ fill: 'black' }}/>

@@ -62,7 +62,7 @@ h2 small {
 }
 
 .col2 {
-    flex-basis: 23%;
+    flex-basis: 21%;
     align-items: center;
 }
 
@@ -80,7 +80,7 @@ h2 small {
     align-items: center;
 }
 .col6 {
-    flex-basis: 15%;
+    flex-basis: 17%;
 }
 
 @media all and (max-width: 767px) {

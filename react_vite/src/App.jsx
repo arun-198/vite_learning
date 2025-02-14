@@ -31,7 +31,7 @@ const NAVIGATION = [
   },
   {
     segment: 'expenses',
-    title: 'Add Expense',
+    title: 'Expense',
     icon: <AddIcon />,
   },
   {
