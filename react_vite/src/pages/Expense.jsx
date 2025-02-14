@@ -7,6 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 import FormDialog from "../components/FormDialog";
 
 import {getExpenses, getExpensesByMonth} from '../services/ExpenseApi';
+import FormDialogUpdate from "../components/FormDialogUpdate";
 
 //import DialogContentText from '@mui/material/DialogContentText';
   
@@ -25,6 +26,10 @@ export default function Expense() {
     const [showExpenseTable, setShowExpenseTable] = React.useState(true);
     const [expenseCatArray,setExpenseCatArray] = React.useState([]);
     const [showExpenseBtn, setShowExpenseBtn] = React.useState(false);
+    //const [formDialogAction, setFormDialogAction] = React.useState("");
+
+    const [openUpdate, setOpenUpdate] = React.useState(false);
+    const [expenseCatUpdate, setExpenseCatUpdate] = React.useState({});
 
 
     const handleChange = (event, newValue) => {
@@ -63,6 +68,12 @@ export default function Expense() {
       setOpen(true);
     };
 
+    const handleClickUpdate = (expensecategory) => {
+      console.log(`expense category array: ${expensecategory.expenseCat}`);
+      setExpenseCatUpdate(expensecategory);
+      setOpenUpdate(true);
+    };
+
     const handleShowExpenseBtn = () => {
       setShowExpenseTable(true);
       setShowExpenseBtn(false);
@@ -93,10 +104,14 @@ export default function Expense() {
         //setExpenseMonths(data);
         setSelectedExpenses(data.expenses);
         setExpenseCatArray(data.expenses.map(expenseItems => expenseItems.expenseCat));
+        setShowExpenseBtn(false);
+        setShowExpenseTable(true);
       } catch (err) {
         setSelectedExpenses([]);
         setExpenseCatArray([]);
         console.error("Expense Month error:", err);
+        setShowExpenseBtn(false);
+        setShowExpenseTable(true);
       } 
     }
   
@@ -157,9 +172,15 @@ export default function Expense() {
         showExpenseTable={showExpenseTable} 
         setShowExpenseTable={setShowExpenseTable}
         expenseCatArray={expenseCatArray}
+        handleClickUpdate={handleClickUpdate}
         setExpenseCatArray={setExpenseCatArray}
         setShowExpenseBtn={setShowExpenseBtn}/>
-      
+      <FormDialogUpdate 
+        selectedMonth={selectedMonth}
+        expenseCatUpdate={expenseCatUpdate}
+        selectedExpenses={selectedExpenses}
+        setSelectedExpenses={setSelectedExpenses}
+        openUpdate={openUpdate} setOpenUpdate={setOpenUpdate} />
       <br />
       <div className={styles.buttonFlexBox}> {/* Container for buttons */}
         <Button variant="contained" endIcon={<AddIcon />} onClick={handleClickOpen}>

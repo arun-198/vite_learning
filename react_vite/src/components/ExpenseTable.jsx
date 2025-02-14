@@ -7,7 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {updateExpensesByMonth} from '../services/ExpenseApi';
 
-export default function ExpenseTable({ expenses,selectedMonth,setSelectedExpenses, showExpenseTable, setShowExpenseTable, expenseCatArray, setExpenseCatArray, setShowExpenseBtn }) {
+export default function ExpenseTable({ expenses,selectedMonth,setSelectedExpenses, showExpenseTable, setShowExpenseTable, expenseCatArray, setExpenseCatArray, handleClickUpdate, setShowExpenseBtn }) {
 
   //let ExpenseCatList = ['Travel','Food'];
   const [expenseCat, setExpenseCat] = React.useState(expenseCatArray[0]); 
@@ -71,8 +71,12 @@ export default function ExpenseTable({ expenses,selectedMonth,setSelectedExpense
         ...expenses
       ];
       let foundSecondIndex = updatedExpenseCat.findIndex(item => item.expenseCat === expenseCat);
+      console.log(`initial spent: ${updatedExpenseCat[foundSecondIndex].spent}`);
+      console.log(`amount to be deleted: ${updatedExpenseCat[foundSecondIndex].expenseItems[foundIndex].spent}`);
       if (foundSecondIndex !== -1) {
+        updatedExpenseCat[foundSecondIndex].spent = updatedExpenseCat[foundSecondIndex].spent - updatedExpenseCat[foundSecondIndex].expenseItems[foundIndex].spent;
         updatedExpenseCat[foundSecondIndex].expenseItems = updatedExpenseItems;
+        console.log(`final spent: ${updatedExpenseCat[foundSecondIndex].spent}`);
         try {
           updatedExpenseCat[foundSecondIndex].date = updatedExpenseItems[-1].date;
         } catch(err) {
@@ -116,23 +120,23 @@ export default function ExpenseTable({ expenses,selectedMonth,setSelectedExpense
               <div className={styles.col3}>Budget</div>
               <div className={styles.col4}>Spent</div>
               <div className={styles.col5}>Date</div>
-              <div className={styles.col6}> </div>
+              <div className={styles.col6}>Actions</div>
             </li>
             {expenses.map((expense, index) => (
               <li className={styles.tableRow} key={index} >
                 <div className={styles.col1} data-label="No">{index + 1}</div>
                 <div className={styles.col2} data-label="Expense Cat">{expense.expenseCat}</div>
-                <div className={styles.col3} data-label="Budget">{expense.budget || "N/A"}</div>
+                <div className={styles.col3} data-label="Budget">{expense.budget}</div>
                 <div className={styles.col4} data-label="Spent">{expense.spent}</div>
                 <div className={styles.col5} data-label="Date">{expense.date}</div>
                 <div className={styles.col6}> 
-                <IconButton size="small" aria-label="add to shopping cart" onClick={()=>openExpense(expense.expenseCat)}>
+                <IconButton sx={{'&:hover': {backgroundColor: 'grey'}}} size="small" aria-label="view expense cart" onClick={()=>openExpense(expense.expenseCat)}>
                   <VisibilityIcon style={{ fill: 'black' }}/>
                 </IconButton>
-                <IconButton size="small" aria-label="add to shopping cart" >
+                <IconButton sx={{'&:hover': {backgroundColor: 'grey'}}} size="small" aria-label="edit expense cart" onClick={()=>handleClickUpdate(expense)}>
                   <EditIcon style={{ fill: 'black' }}/>
                 </IconButton>
-                <IconButton size="small" aria-label="add to shopping cart" onClick={()=>deleteExpenseCatMth(expense.expenseCat)}>
+                <IconButton sx={{'&:hover': {backgroundColor: 'grey'}}} size="small" aria-label="delete expense cart" onClick={()=>deleteExpenseCatMth(expense.expenseCat)}>
                   <DeleteIcon style={{ fill: 'black' }}/>
                 </IconButton>
                 </div>
@@ -156,10 +160,10 @@ export default function ExpenseTable({ expenses,selectedMonth,setSelectedExpense
                 <div className={styles.col4} data-label="Spent">{expenseItem.spent}</div>
                 <div className={styles.col5} data-label="Date">{expenseItem.date}</div>
                 <div className={styles.col6}>
-                  <IconButton size="small" aria-label="add to shopping cart" >
+                  <IconButton sx={{'&:hover': {backgroundColor: 'grey'}}} size="small" aria-label="add to shopping cart" >
                     <EditIcon style={{ fill: 'black' }}/>
                   </IconButton>
-                  <IconButton size="small" aria-label="add to shopping cart" onClick={()=>deleteExpenseItem(expenseItem.expense)}>
+                  <IconButton sx={{'&:hover': {backgroundColor: 'grey'}}} size="small" aria-label="add to shopping cart" onClick={()=>deleteExpenseItem(expenseItem.expense)}>
                     <DeleteIcon style={{ fill: 'black' }}/>
                   </IconButton>
                 </div>
@@ -189,5 +193,6 @@ ExpenseTable.propTypes = {
     setShowExpenseTable: PropTypes.func.isRequired,
     expenseCatArray: PropTypes.array.isRequired,
     setExpenseCatArray: PropTypes.func.isRequired,
+    handleClickUpdate: PropTypes.func.isRequired,
     setShowExpenseBtn: PropTypes.func.isRequired
   };

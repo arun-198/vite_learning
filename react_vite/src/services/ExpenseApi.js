@@ -48,3 +48,13 @@ export const getExpensesByMonth = async (month) => {
     }
     }
   };
+
+  export const updateExpenseCatByMonth = async (month, updatedExpense) => {
+    try {
+      const response = await api.put(`/expenses/${month}`, updatedExpense);
+      return response.data;
+    } catch (error) {
+        console.error(`Error updating expense cat ${month}:`, error);
+        throw error; 
+    }
+  };
