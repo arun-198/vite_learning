@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styles from "./component_styles/FormDialog.module.css"
+import styles from "./component_styles/ExpenseTableFormDialog.module.css"
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -12,9 +12,9 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import PropTypes from "prop-types";
 
-import {updateExpensesByMonth} from '../services/ExpenseApi';
+import {updateExpensesByMonth} from '../../services/ExpenseApi';
 
-export default function FormDialog({ selectedExpenses, selectedMonth, setSelectedExpenses,expenseCatArray,setExpenseCatArray,open, setOpen}) {
+export default function ExpenseTableFormDialog({ selectedExpenses, selectedMonth, setSelectedExpenses,expenseCatArray,setExpenseCatArray,open, setOpen}) {
 
     //const [open, setOpen] = React.useState(false);
     const [formType, setFormType] = React.useState('Expense Category'); // Default form type
@@ -223,10 +223,10 @@ export default function FormDialog({ selectedExpenses, selectedMonth, setSelecte
 }
 
 
-FormDialog.propTypes = {
+ExpenseTableFormDialog.propTypes = {
     //handleExpenseCatMth: PropTypes.var.isRequired,
     //handleExpenseMth: PropTypes.var.isRequired,
-    selectedExpenses: PropTypes.object.isRequired,
+    selectedExpenses: PropTypes.array.isRequired,
     selectedMonth: PropTypes.string.isRequired,
     setSelectedExpenses: PropTypes.func.isRequired,
     expenseCatArray:PropTypes.array.isRequired,

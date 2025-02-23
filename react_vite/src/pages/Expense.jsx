@@ -4,10 +4,11 @@ import * as React from 'react';
 import ExpenseTable from "../components/expenseTable";
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-import FormDialog from "../components/FormDialog";
+import ExpenseTableFormDialog from "../components/form_dialog/ExpenseTableFormDialog";
 
 import {getExpenses, getExpensesByMonth} from '../services/ExpenseApi';
-import FormDialogUpdate from "../components/FormDialogUpdate";
+import ExpenseTableFormDialogUpdate from "../components/form_dialog/ExpenseTableFormDialogUpdate";
+import ExpenseTableFormDialogItemUpdate from "../components/form_dialog/ExpenseTableFormDialogItemUpdate";
 
 //import DialogContentText from '@mui/material/DialogContentText';
   
@@ -21,7 +22,7 @@ export default function Expense() {
     const [expenseMonths, setExpenseMonths] = React.useState(new Object()); //Sample data for all months
     const [value, setValue] = React.useState(0);
     const [selectedMonth, setSelectedMonth] = React.useState("Jan");
-    const [selectedExpenses, setSelectedExpenses] = React.useState(new Object()); // Default to Jan expenses
+    const [selectedExpenses, setSelectedExpenses] = React.useState([]); // Default to Jan expenses
     const [open, setOpen] = React.useState(false);
     const [showExpenseTable, setShowExpenseTable] = React.useState(true);
     const [expenseCatArray,setExpenseCatArray] = React.useState([]);
@@ -31,8 +32,11 @@ export default function Expense() {
     const [openUpdate, setOpenUpdate] = React.useState(false);
     const [expenseCatUpdate, setExpenseCatUpdate] = React.useState({});
 
+    const [itemUpdate, setItemUpdate] = React.useState(false);
+    const [itemArray, setItemArray] = React.useState(["default", {"expense": "default","spent": 0,"date": "default"}]);
 
-    const handleChange = (event, newValue) => {
+
+    const handleChange = (event, newValue) => { 
         console.log(newValue);
         setValue(newValue);
         // Update the selectedExpenses based on the tab
@@ -115,20 +119,11 @@ export default function Expense() {
       } 
     }
   
-    // React.useEffect(() => {
-    //   const fetchItems = async () => {
-    //     try {
-    //       const data = await getExpensesByMonth(selectedMonth);
-    //       //console.log(data);
-    //       setSelectedExpenses(data);
-    //     } catch (err) { // Catch the error re-thrown from the API function
-    //       console.log(err.message); // Or a more user-friendly message
-    //       console.error("Expense Month error:", err); // Keep logging the detailed error
-    //     } 
-    //   };
-  
-    //   fetchItems();
-    // }, []);
+    const handleClickItemUpdate = (a,b) => {
+      console.log(`Updating ${b} from ${a}`);
+      setItemArray([a,b]);
+      setItemUpdate(true);
+    };
 
 
 
@@ -158,7 +153,7 @@ export default function Expense() {
           ))}
         </Tabs>
         <br />
-      <FormDialog 
+      <ExpenseTableFormDialog 
         selectedExpenses={selectedExpenses}
         selectedMonth={selectedMonth}
         setSelectedExpenses={setSelectedExpenses}
@@ -174,13 +169,17 @@ export default function Expense() {
         expenseCatArray={expenseCatArray}
         handleClickUpdate={handleClickUpdate}
         setExpenseCatArray={setExpenseCatArray}
+        handleClickItemUpdate={handleClickItemUpdate}
         setShowExpenseBtn={setShowExpenseBtn}/>
-      <FormDialogUpdate 
+      <ExpenseTableFormDialogUpdate 
         selectedMonth={selectedMonth}
         expenseCatUpdate={expenseCatUpdate}
         selectedExpenses={selectedExpenses}
         setSelectedExpenses={setSelectedExpenses}
         openUpdate={openUpdate} setOpenUpdate={setOpenUpdate} />
+      <ExpenseTableFormDialogItemUpdate
+        itemArray={itemArray}
+        itemUpdate={itemUpdate} setItemUpdate={setItemUpdate} />
       <br />
       <div className={styles.buttonFlexBox}> {/* Container for buttons */}
         <Button variant="contained" endIcon={<AddIcon />} onClick={handleClickOpen}>

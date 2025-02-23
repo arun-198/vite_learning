@@ -10,7 +10,7 @@ import {updateExpensesByMonth} from '../services/ExpenseApi';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import { styled } from '@mui/material/styles';
 
-export default function ExpenseTable({ expenses,selectedMonth,setSelectedExpenses, showExpenseTable, setShowExpenseTable, expenseCatArray, setExpenseCatArray, handleClickUpdate, setShowExpenseBtn }) {
+export default function ExpenseTable({ expenses,selectedMonth,setSelectedExpenses, showExpenseTable, setShowExpenseTable, expenseCatArray, setExpenseCatArray, handleClickUpdate,handleClickItemUpdate, setShowExpenseBtn }) {
 
   //let ExpenseCatList = ['Travel','Food'];
   const [expenseCat, setExpenseCat] = React.useState(expenseCatArray[0]); 
@@ -184,7 +184,7 @@ export default function ExpenseTable({ expenses,selectedMonth,setSelectedExpense
                 <div className={styles.col4} data-label="Spent">{expenseItem.spent}</div>
                 <div className={styles.col5} data-label="Date">{expenseItem.date}</div>
                 <div className={styles.col6}>
-                  <IconButton sx={{'&:hover': {backgroundColor: 'grey'}}} size="small" aria-label="add to shopping cart" >
+                  <IconButton sx={{'&:hover': {backgroundColor: 'grey'}}} size="small" aria-label="add to shopping cart" onClick={()=>handleClickItemUpdate(expenseCat,expenseItem)}>
                     <EditIcon style={{ fill: 'black' }}/>
                   </IconButton>
                   <IconButton sx={{'&:hover': {backgroundColor: 'grey'}}} size="small" aria-label="add to shopping cart" onClick={()=>deleteExpenseItem(expenseItem.expense)}>
@@ -218,5 +218,6 @@ ExpenseTable.propTypes = {
     expenseCatArray: PropTypes.array.isRequired,
     setExpenseCatArray: PropTypes.func.isRequired,
     handleClickUpdate: PropTypes.func.isRequired,
+    handleClickItemUpdate: PropTypes.func.isRequired,
     setShowExpenseBtn: PropTypes.func.isRequired
   };
