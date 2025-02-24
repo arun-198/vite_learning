@@ -178,8 +178,12 @@ export default function Expense() {
         setSelectedExpenses={setSelectedExpenses}
         openUpdate={openUpdate} setOpenUpdate={setOpenUpdate} />
       <ExpenseTableFormDialogItemUpdate
+        itemUpdate={itemUpdate} 
+        setItemUpdate={setItemUpdate} 
         itemArray={itemArray}
-        itemUpdate={itemUpdate} setItemUpdate={setItemUpdate} />
+        selectedExpenses={selectedExpenses}
+        setSelectedExpenses={setSelectedExpenses}
+        selectedMonth={selectedMonth}/>
       <br />
       <div className={styles.buttonFlexBox}> {/* Container for buttons */}
         <Button variant="contained" endIcon={<AddIcon />} onClick={handleClickOpen}>

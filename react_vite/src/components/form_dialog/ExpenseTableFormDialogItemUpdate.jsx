@@ -11,13 +11,43 @@ import PropTypes from "prop-types";
  
 // import MenuItem from '@mui/material/MenuItem';
 
+import {updateExpenseCatByMonth} from '../../services/ExpenseApi';
 
-export default function ExpenseTableFormDialogItemUpdate({itemUpdate, setItemUpdate, itemArray}) {
+
+export default function ExpenseTableFormDialogItemUpdate({itemUpdate, setItemUpdate, itemArray, selectedExpenses, setSelectedExpenses, selectedMonth}) {
 
 
     const handleCloseFormUpdate = () => {
         setItemUpdate(false);
       };
+
+    const handleExpenseItemChange = (updatedExpenseItem) => {
+      console.log('Updating expense item');
+      let newExpenseCat = [
+        ...selectedExpenses
+    ];
+    let foundIndex = newExpenseCat.findIndex(item => item.expenseCat === itemArray[0]);
+    if (foundIndex !== -1) {
+      newExpenseCat[foundIndex].spent = newExpenseCat[foundIndex].spent - parseFloat(itemArray[1].spent) + parseFloat(updatedExpenseItem.spent);
+      newExpenseCat[foundIndex].date = updatedExpenseItem.date;
+
+      let foundItemIndex = newExpenseCat[foundIndex].expenseItems.findIndex(expenseItem => expenseItem.expense === itemArray[1].expense);
+      if (foundItemIndex != 1) {
+        newExpenseCat[foundIndex].expenseItems[foundItemIndex].expense = updatedExpenseItem.expense;
+        newExpenseCat[foundIndex].expenseItems[foundItemIndex].spent = updatedExpenseItem.spent;
+        newExpenseCat[foundIndex].expenseItems[foundItemIndex].date = updatedExpenseItem.date;
+
+        let newExpenseMonth = {};
+        newExpenseMonth['month']=selectedMonth;
+        newExpenseMonth['expenses']=newExpenseCat;
+        updateExpenseCatByMonth(selectedMonth,newExpenseMonth);
+              
+        // Update selectedExpenses
+        setSelectedExpenses(newExpenseCat);
+      }
+    }
+
+    }
   
     return (
         <Dialog
@@ -29,6 +59,8 @@ export default function ExpenseTableFormDialogItemUpdate({itemUpdate, setItemUpd
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             let formJson = Object.fromEntries(formData.entries());
+            //formJson.orig = itemArray[1].expense;
+            handleExpenseItemChange(formJson);
             console.log(formJson);
             setItemUpdate(false);
             },
@@ -96,5 +128,8 @@ ExpenseTableFormDialogItemUpdate.propTypes = {
   itemUpdate: PropTypes.bool.isRequired,
   setItemUpdate: PropTypes.func.isRequired,
   itemArray: PropTypes.array.isRequired,
+  selectedExpenses: PropTypes.array.isRequired,
+  setSelectedExpenses: PropTypes.func.isRequired,
+  selectedMonth: PropTypes.string.isRequired
   };
 
