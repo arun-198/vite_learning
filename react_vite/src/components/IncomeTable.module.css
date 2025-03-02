@@ -1,0 +1,106 @@
+body {
+    font-family: 'lato', sans-serif;
+}
+
+ul {
+    width: 100vh;
+}
+
+.container {
+    max-width: 80%;
+    margin: 0 auto;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+h2 {
+    font-size: 26px;
+    margin: 20px 0;
+    text-align: center;
+}
+h2 small {
+    font-size: 0.5em;
+}
+
+.responsiveTable {
+    list-style: none;
+    padding: 0;
+}
+
+.tableHeader {
+    background-color: #5a5e5f;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 0.03em;
+    border-radius: 3px;
+    padding: 25px 30px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px; /* Adjusted for smaller spacing */
+}
+
+.tableRow {
+    background-color: #b3b1b1;
+    font-size: 18px;
+    color: black;
+    box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    padding: 25px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px; /* Reduced spacing */
+}
+
+/* .tableRow:hover{
+    background-color: #615e5e;
+} */
+
+.col1 {
+    flex-basis: 5%;
+    align-items: center;
+}
+
+.col2 {
+    flex-basis: 21%;
+    align-items: center;
+}
+
+.col3 {
+    flex-basis: 13%;
+    align-items: center;
+}
+
+.col4 {
+    flex-basis: 13%;
+    align-items: center;
+}
+.col5 {
+    flex-basis: 18%;
+    align-items: center;
+}
+.col6 {
+    flex-basis: 17%;
+}
+
+@media all and (max-width: 767px) {
+    .tableHeader {
+        display: none;
+    }
+    .tableRow {
+        display: block;
+    }
+    
+    .tableRow div {
+        display: flex;
+        padding: 10px 0;
+    }
+    .tableRow div::before {
+        color: #6C7A89;
+        padding-right: 10px;
+        content: attr(data-label);
+        flex-basis: 50%;
+        text-align: right;
+    }
+}
+

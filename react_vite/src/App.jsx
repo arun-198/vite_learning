@@ -17,6 +17,7 @@ import AddIcon from '@mui/icons-material/Add';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import Expense from './pages/Expense';
+import Inflow from './pages/Inflow';
 
 
 const NAVIGATION = [
@@ -100,6 +101,8 @@ function App() {
     switch (router.pathname) {
       case '/expenses':
         return <Expense />;
+      case '/inflow':
+        return <Inflow />;
       default:
         return <DemoPageContent pathname={router.pathname} />;
     }

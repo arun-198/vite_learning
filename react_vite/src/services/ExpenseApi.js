@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3000'; // Use environment variables
+const API_BASE_URL = import.meta.env.VITE_API_URL; // Use environment variables
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -14,7 +14,7 @@ export const getExpenses = async () => {
     const response = await api.get('/expenses');
     return response.data;
   } catch (error) {
-    console.error("Error fetching items:", error);
+    console.error("Error fetching Expense items:", error);
     throw error; // Re-throw the error for the component to handle
   }
 };
@@ -24,7 +24,7 @@ export const getExpensesByMonth = async (month) => {
       const response = await api.get(`/expenses/${month}`);
       return response.data;
     } catch (error) {
-      console.error(`Error fetching item ${month}:`, error);
+      console.error(`Error fetching Expense item ${month}:`, error);
       throw error; // Re-throw the error for the component to handle
     }
   };
