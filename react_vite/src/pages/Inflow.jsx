@@ -84,8 +84,12 @@ export default function Inflow() {
                 ))}
             </Tabs>
             <br />
-            <IncomeTableFormDialog selectedMonth={selectedMonth} open={open} setOpen={setOpen} />
-            <IncomeTable selectedMonth={selectedMonth} selectedInflows={selectedInflows}/>
+            <IncomeTableFormDialog 
+              selectedMonth={selectedMonth} 
+              selectedInflows={selectedInflows}
+              setSelectedInflows={setSelectedInflows} 
+              open={open} setOpen={setOpen} />
+            <IncomeTable selectedMonth={selectedMonth} selectedInflows={selectedInflows} setSelectedInflows={setSelectedInflows} />
             <br />
             <div style={buttonContainerStyle}> {/* Container for buttons */}
                 <Button variant="contained" endIcon={<AddIcon />} onClick={handleClickOpen}> 

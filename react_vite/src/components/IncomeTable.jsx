@@ -4,10 +4,27 @@ import PropTypes from "prop-types";
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { deleteInflowsByMonth } from "../services/IncomeApi";
 
-export default function IncomeTable({selectedMonth,selectedInflows}) {
+export default function IncomeTable({selectedMonth,selectedInflows, setSelectedInflows}) {
 
     console.log(selectedMonth);
+
+    const handleDeleteInflow = (id) => {
+        let updatedInflow = [
+            ...selectedInflows
+        ];
+        updatedInflow.splice(id-1);
+        updatedInflow.forEach((item, newIndex) => {
+            item.id = newIndex + 1;
+          });
+          let newInflowMonth = {};
+          newInflowMonth['month'] = selectedMonth;
+          newInflowMonth['inflows'] = updatedInflow;
+          console.log(newInflowMonth);
+          deleteInflowsByMonth(selectedMonth,newInflowMonth);
+          setSelectedInflows(updatedInflow);
+    }
     
     return(
         <div className={styles.container}>
@@ -30,7 +47,7 @@ export default function IncomeTable({selectedMonth,selectedInflows}) {
                             <IconButton sx={{'&:hover': {backgroundColor: 'grey'}}} size="small" aria-label="edit expense cart" >
                                 <EditIcon style={{ fill: 'black' }}/>
                             </IconButton>
-                            <IconButton sx={{'&:hover': {backgroundColor: 'grey'}}} size="small" aria-label="delete expense cart">
+                            <IconButton sx={{'&:hover': {backgroundColor: 'grey'}}} size="small" aria-label="delete expense cart" onClick={()=>handleDeleteInflow(inflow.id)}>
                                 <DeleteIcon style={{ fill: 'black' }}/>
                             </IconButton>
                         </div>
@@ -45,5 +62,6 @@ export default function IncomeTable({selectedMonth,selectedInflows}) {
 
 IncomeTable.propTypes = {
     selectedMonth: PropTypes.string.isRequired,
-    selectedInflows: PropTypes.array.isRequired
+    selectedInflows: PropTypes.array.isRequired,
+    setSelectedInflows: PropTypes.func.isRequired
 }
