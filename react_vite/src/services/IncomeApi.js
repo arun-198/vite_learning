@@ -57,3 +57,13 @@ export const deleteInflowsByMonth = async(month,updatedInflow) => {
     throw error; // Re-throw the error for the component to handle
   }
 };
+
+export const updateInflowsByMonth = async (month, updatedInflow) => {
+  try {
+    const response = await api.put(`/inflows/${month}`, updatedInflow);
+    return response.data;
+  } catch (error) {
+    console.error(`Error uodating Inflow item for ${month}:`, error);
+    throw error; // Re-throw the error for the component to handle
+  }
+};

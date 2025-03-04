@@ -1,7 +1,7 @@
 import styles from "./Expense.module.css"
 import { Box, Tabs, Tab, Typography } from "@mui/material";
 import * as React from 'react';
-import ExpenseTable from "../components/expenseTable";
+import ExpenseTable from "../components/ExpenseTable";
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import ExpenseTableFormDialog from "../components/form_dialog/ExpenseTableFormDialog";

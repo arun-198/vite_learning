@@ -6,7 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteInflowsByMonth } from "../services/IncomeApi";
 
-export default function IncomeTable({selectedMonth,selectedInflows, setSelectedInflows}) {
+export default function IncomeTable({selectedMonth,selectedInflows,handleClickEdit, setSelectedInflows}) {
 
     console.log(selectedMonth);
 
@@ -44,7 +44,7 @@ export default function IncomeTable({selectedMonth,selectedInflows, setSelectedI
                         <div className={styles.col3} data-label="Amount">{inflow.amount}</div>
                         <div className={styles.col4} data-label="Date">{inflow.date}</div>
                         <div className={styles.col5}>
-                            <IconButton sx={{'&:hover': {backgroundColor: 'grey'}}} size="small" aria-label="edit expense cart" >
+                            <IconButton sx={{'&:hover': {backgroundColor: 'grey'}}} size="small" aria-label="edit expense cart" onClick={()=>handleClickEdit(inflow.id)}>
                                 <EditIcon style={{ fill: 'black' }}/>
                             </IconButton>
                             <IconButton sx={{'&:hover': {backgroundColor: 'grey'}}} size="small" aria-label="delete expense cart" onClick={()=>handleDeleteInflow(inflow.id)}>
@@ -63,5 +63,6 @@ export default function IncomeTable({selectedMonth,selectedInflows, setSelectedI
 IncomeTable.propTypes = {
     selectedMonth: PropTypes.string.isRequired,
     selectedInflows: PropTypes.array.isRequired,
+    handleClickEdit: PropTypes.func.isRequired,
     setSelectedInflows: PropTypes.func.isRequired
 }

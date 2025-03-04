@@ -7,6 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 import { getInflows, getInflowsByMonth } from "../services/IncomeApi";
 import IncomeTableFormDialog from "../components/form_dialog/IncomeTableFormDialog";
+import IncomeTableFormDialogUpdate from "../components/form_dialog/component_styles/IncomeTableFormDIalogUpdate";
 
 export default function Inflow() {
 
@@ -15,10 +16,24 @@ export default function Inflow() {
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
       ];
 
-    const [value, setValue] = React.useState(0);
-    const [selectedMonth, setSelectedMonth] = React.useState("Jan");
-    const [selectedInflows, setSelectedInflows] = React.useState([]); // Default to Jan expenses
+    
+
+    
+
+    function getCurrentMonthIndex() {
+      const currentDate = new Date();
+      console.log(currentDate);
+      const currentMonthIndex = currentDate.getMonth();
+      
+      return currentMonthIndex;
+    }
+    const [value, setValue] = React.useState(getCurrentMonthIndex());
+    const [selectedMonth, setSelectedMonth] = React.useState(months[getCurrentMonthIndex()]);
+    const [selectedInflows, setSelectedInflows] = React.useState([]); 
     const [open, setOpen] = React.useState(false);
+
+    const [inflowItem, setInflowItem] = React.useState({});
+    const [openUpdate, setOpenUpdate] = React.useState(false);
 
     const buttonContainerStyle = {
         display: 'flex',
@@ -37,8 +52,8 @@ export default function Inflow() {
           const fetchItems = async () => {
             try {
               const data = await getInflows();
-              console.log(data[0].inflows);
-              setSelectedInflows(data[0].inflows);
+              console.log(data[value].inflows);
+              setSelectedInflows(data[value].inflows);
             } catch (err) { // Catch the error re-thrown from the API function
               console.log(err.message); // Or a more user-friendly message
               console.error("Inflow error:", err); // Keep logging the detailed error
@@ -62,6 +77,11 @@ export default function Inflow() {
         const handleClickOpen = () => {
             setOpen(true);
           };
+
+        const handleClickEdit = (id) => {
+          setInflowItem(selectedInflows[id-1]);
+          setOpenUpdate(true);
+        }
 
     return (
         <Box
@@ -89,7 +109,18 @@ export default function Inflow() {
               selectedInflows={selectedInflows}
               setSelectedInflows={setSelectedInflows} 
               open={open} setOpen={setOpen} />
-            <IncomeTable selectedMonth={selectedMonth} selectedInflows={selectedInflows} setSelectedInflows={setSelectedInflows} />
+            <IncomeTableFormDialogUpdate 
+              selectedMonth={selectedMonth}
+              inflowItem={inflowItem}
+              selectedInflows={selectedInflows}
+              setSelectedInflows={setSelectedInflows}  
+              openUpdate={openUpdate}
+              setOpenUpdate={setOpenUpdate}/>
+            <IncomeTable 
+              selectedMonth={selectedMonth} 
+              selectedInflows={selectedInflows}
+              handleClickEdit={handleClickEdit} 
+              setSelectedInflows={setSelectedInflows} />
             <br />
             <div style={buttonContainerStyle}> {/* Container for buttons */}
                 <Button variant="contained" endIcon={<AddIcon />} onClick={handleClickOpen}> 
