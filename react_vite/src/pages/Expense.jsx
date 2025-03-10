@@ -19,9 +19,17 @@ export default function Expense() {
       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     ];
 
+    function getCurrentMonthIndex() {
+      const currentDate = new Date();
+      console.log(currentDate);
+      const currentMonthIndex = currentDate.getMonth();
+      
+      return currentMonthIndex;
+    }
+
     const [expenseMonths, setExpenseMonths] = React.useState(new Object()); //Sample data for all months
-    const [value, setValue] = React.useState(0);
-    const [selectedMonth, setSelectedMonth] = React.useState("Jan");
+    const [value, setValue] = React.useState(getCurrentMonthIndex());
+    const [selectedMonth, setSelectedMonth] = React.useState(months[getCurrentMonthIndex()]);
     const [selectedExpenses, setSelectedExpenses] = React.useState([]); // Default to Jan expenses
     const [open, setOpen] = React.useState(false);
     const [showExpenseTable, setShowExpenseTable] = React.useState(true);
@@ -88,7 +96,7 @@ export default function Expense() {
       const fetchItems = async () => {
         try {
           const data = await getExpenses();
-          console.log(data[0].expenses);
+          console.log(data[value].expenses);
           setExpenseMonths(data);
           setSelectedExpenses(data[0].expenses);
           setExpenseCatArray(data[0].expenses.map(expenseItems => expenseItems.expenseCat));

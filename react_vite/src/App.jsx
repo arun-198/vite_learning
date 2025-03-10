@@ -10,14 +10,15 @@ import { createTheme } from '@mui/material/styles';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import DescriptionIcon from '@mui/icons-material/Description';
 // import LayersIcon from '@mui/icons-material/Layers';
+import PaymentsIcon from '@mui/icons-material/Payments';
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { useDemoRouter } from '@toolpad/core/internal';
 import AddIcon from '@mui/icons-material/Add';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import Expense from './pages/Expense';
 import Inflow from './pages/Inflow';
+import Home from './pages/Home';
 
 
 const NAVIGATION = [
@@ -94,7 +95,7 @@ DemoPageContent.propTypes = {
 
 function App() {
 
-  const router = useDemoRouter('/dashboard');
+  const router = useDemoRouter('/home');
 
   // Render the appropriate component based on the router's pathname
   const renderPage = () => {
@@ -103,6 +104,8 @@ function App() {
         return <Expense />;
       case '/inflow':
         return <Inflow />;
+      case '/home':
+        return <Home />;
       default:
         return <DemoPageContent pathname={router.pathname} />;
     }
@@ -115,12 +118,18 @@ function App() {
       <AppProvider
         navigation={NAVIGATION}
         branding={{
-          logo:  <AccountBalanceIcon style={{marginTop:'25%',marginLeft: '50%',fill: 'var(--mui-palette-primary-main)'}}/>,
-          title: <span style={{ marginLeft: '10%' }}>Finance Tracker</span>,
+          logo:  <PaymentsIcon style={{marginTop:'25%',marginLeft: '50%',fill: 'var(--mui-palette-primary-main)'}}/>,
+          title: <span style={{ marginLeft: '10%' }}>PersonalFinance</span>,
           homeUrl: '/home',
         }}
         router={router}
         theme={demoTheme}
+        styles={{
+          navigation: {
+            width: '550px', // Set your desired width here (e.g., '250px', '20%', etc.)
+          },
+        }}
+        
       >
         
         <DashboardLayout> 
