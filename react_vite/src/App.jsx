@@ -61,7 +61,42 @@ const demoTheme = createTheme({
   cssVariables: {
     colorSchemeSelector: 'data-toolpad-color-scheme',
   },
-  colorSchemes: { light: true, dark: true },
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: {
+          main: '#1976d2', // Your light theme primary color
+        },
+        secondary: {
+          main: '#9c27b0', // Your light theme secondary color
+        },
+        background: {
+          default: '#f5f5f5', // Your light theme background color
+          paper: '#f5f6fa', // Your light theme paper background color
+        },
+        text: {
+          primary: '#333333', // Your light theme text color
+        },
+      },
+    },
+    dark: {
+      palette: {
+        primary: {
+          main: '#90caf9', // Your dark theme primary color
+        },
+        secondary: {
+          main: '#ce93d8', // Your dark theme secondary color
+        },
+        background: {
+          default: '#05070a', // Your dark theme background color
+          paper: '#111317', // Your dark theme paper background color
+        },
+        text: {
+          primary: '#ffffff', // Your dark theme text color
+        },
+      },
+    },
+  },
   breakpoints: {
     values: {
       xs: 0,

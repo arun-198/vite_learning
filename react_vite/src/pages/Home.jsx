@@ -17,35 +17,17 @@ export default function Home() {
 
     return(
         <Box
-            sx={{
-                py: 4,
+            sx={{py: 4,
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'left',
-                textAlign: 'center',
-            }}
-            >
-                <Box 
-                    sx={{
-                        width: 220,
-                        height: 90,
-                        borderRadius: 1,
-                        marginLeft:'5vw',
-                        alignContent: 'center',
-                        bgcolor: '#b3b1b1',
-                        '&:hover': {
-                            bgcolor: '#7b7777',
-                        },
-                    }}
-                >
-                    <Typography variant="h6" gutterBottom sx={{color:'#4c4d4f', marginTop:'0.6vh', marginBottom:'0'}}>
-                            Latest
-                    </Typography>
-                    <Typography variant="h4" gutterBottom sx={{color:'black'}}>
-                            {months[getCurrentMonthIndex()]}
-                    </Typography>
-                    
-                </Box>
+                alignItems: 'flex-start', // Change alignItems to flex-start
+                textAlign: 'left'}}>
+                
+        
+
+            <Typography variant="h2" gutterBottom sx={{fontWeight:'600',fontSize:'1.5rem',marginLeft:'1.5vw'}}>
+                        {months[getCurrentMonthIndex()]}
+            </Typography>
             
         </Box>
         
